@@ -1,4 +1,4 @@
-from heuristique import Heuristique
+from Heuristic import Heuristic
 from time import time
 
 state = [
@@ -11,7 +11,7 @@ state = [
 ]
 
 deb = time()
-heur = Heuristique.heuristique(state)
+heur = Heuristic.heuristic(state)
 fin = time()
 print(heur)
 print(fin - deb, "s")

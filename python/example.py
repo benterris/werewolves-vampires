@@ -1,14 +1,14 @@
 import map_printer
 import random
 
+# Config
 
 SIZE = (5, 5)
-
 N = SIZE[0]
 M = SIZE[1]
 
 
-state = [
+initial_state = [
     {"type": "W", "number": 1, "x": 0, "y": 2},
     {"type": "H", "number": 1, "x": 2, "y": 0},
     {"type": "H", "number": 1, "x": 2, "y": 2},
@@ -76,6 +76,7 @@ def next_move_example_random(player, state):
 
         i += 1
 
+# =========
 # UTILITIES
 # =========
 
@@ -99,4 +100,4 @@ def randomContiguous1D(x, size):
     return min(max(x + random.randint(-1, 1), 0), size - 1)
 
 
-game_loop(state)
+game_loop(initial_state)
