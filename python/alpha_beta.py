@@ -1,6 +1,5 @@
 import utilities
-
-MAX_DEPTH = 100  # TODO: load this from a config file
+import config
 
 
 class AlphaBeta:
@@ -10,7 +9,7 @@ class AlphaBeta:
         Return the best move for the player according to alpha-beta
         """
         value, state_path = self.max_value_ab(
-            state, -float('inf'), float('inf'), player, MAX_DEPTH)
+            state, -float('inf'), float('inf'), player, config.max_depth)
         return state_path[0]
 
     def max_value_ab(self, state, alpha, beta, player, depth):

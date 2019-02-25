@@ -1,4 +1,8 @@
-server_ip="127.0.0.1"
-server_port=5555
-trace=True
-map=""
+# Connections
+server_ip = "127.0.0.1"
+server_port = 5555
+trace = True
+map = ""
+
+# Alpha-beta
+max_depth = 100
