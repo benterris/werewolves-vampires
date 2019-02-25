@@ -44,7 +44,7 @@ def heuristique(state, joueur_positif=0, joueur_qui_doit_jouer=0):
                         ntour -= 1
                     else:
                         ntour += 1
-                    heur += M2 * ntour * entite["number"]
+                    heur -= M2 * ntour * entite["number"]
 
 
     for entite in state:
@@ -65,15 +65,31 @@ def heuristique(state, joueur_positif=0, joueur_qui_doit_jouer=0):
                             ntour -= 1
                         else:
                             ntour += 1
-                        heur += M3 * ntour ** 2 * n1
+                        heur -= M3 * ntour ** 2 * n1
                     elif n1 > n2:
                         ntour = 2 * distance(entite["x"], entite["y"], entite2["x"], entite2["y"])
                         if joueur_qui_doit_jouer == 1:
                             ntour -= 1
                         else:
                             ntour += 1
-                        P_victoire =
-                        heur += M3 * ntour ** 2 * n1
+                        P_victoire = 0
+                        if n1 == n2:
+                            P_victoire = 0.5
+                        elif n1 > n2 and joueur_qui_doit_jouer == 0:
+                            P_victoire = n1/n2 - 0.5
+                        elif n1 > n2 and joueur_qui_doit_jouer == 1:
+                            P_victoire = 1 - n2/(2*n1)
+                        elif n1 < n2 and joueur_qui_doit_jouer == 0:
+                            P_victoire = n1/(2*n2)
+                        elif n1 > n2 and joueur_qui_doit_jouer == 1:
+                            P_victoire = 1 - (n2/n1 - 0.5)
+                        heur += M3 * ntour ** 2 * n1 * P_victoire
+                        heur -= M3 * ntour**2 *n2 * (1-P_victoire)
+
+    if joueur_positif == 1:
+        return -heur
+    else:
+        return heur
 
 
 
