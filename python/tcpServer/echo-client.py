@@ -7,6 +7,7 @@ from time import sleep
 HOST = '127.0.0.1'  # The server's hostname or IP address
 PORT = 5555  # The port used by the server
 
+
 def read_int(sock):
     """
     receives 1 byte and converts it to int
@@ -63,7 +64,7 @@ def receive_upd_command(sock):
     """
     receive the UPD command
     :param sock: the connection socket
-    :return: n: number of changes in the map, changes: list of (x,y,humans,vampires,werewolves)
+    :return: n: number of changes in the map, changes: list of lists [(x,y),humans,vampires,werewolves]
     """
     n = read_int(sock)
     changes = [[(read_int(sock), read_int(sock)), read_int(sock), read_int(sock), read_int(sock)] for i in range(n)]
@@ -103,16 +104,19 @@ def send_mov_command(sock, mov_list):
         trame += struct.pack("b", movement[0][1])  # y : start position
         trame += struct.pack("b", movement[1])  # nb of individuals to move
         trame += struct.pack("b", movement[2][0])  # x : end position
-        trame += struct.pack("b", movement[2][0])  # y : end position
+        trame += struct.pack("b", movement[2][1])  # y : end position
     sock.send(trame)
-    print('mov command sent')
+    print('mov command sent: ', mov_list[0][2])
+
 
 if __name__ == "__main__":
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((HOST, PORT))
         send_nme_command(s, 'Vampire')
-
+        counter = 0
         while True:
+            counter += 1
+            print(counter)
             command = read_command(s)
             print(command)
             if command == 'BYE':
@@ -128,12 +132,13 @@ if __name__ == "__main__":
                 print(receive_hme_command(s))
             elif command == 'MAP':
                 print(receive_map_command(s))
-                sleep(1)
-                # TODO add a function that makes the next move (returns lov_list)
-                send_mov_command(s, [[(4,3),4,(4,4)]]) # TODO send mov_list
             elif command == 'UPD':
                 print(receive_upd_command(s))
+                # TODO add a function that makes the next move (returns lov_list)
+                # TODO send mov_list
+                # if counter == 5:
+                #     send_mov_command(s, [[(4, 3), 4, (4, 2)]])
+                # if counter == 6:
+                #     send_mov_command(s, [[(4, 2), 2, (4, 3)]])
             else:
                 raise ValueError('Unknown command')
-
-
