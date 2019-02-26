@@ -5,4 +5,4 @@ trace = True
 map = ""
 
 # Alpha-beta
-max_depth = 100
+MAX_DEPTH = 100
