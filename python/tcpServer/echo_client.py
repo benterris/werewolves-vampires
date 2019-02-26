@@ -2,7 +2,9 @@
 
 import socket
 import struct
+from python import state
 from time import sleep
+
 
 HOST = '127.0.0.1'  # The server's hostname or IP address
 PORT = 5555  # The port used by the server
@@ -39,6 +41,11 @@ def receive_set_command(sock):
 
 
 def receive_hum_command(sock):
+    """
+    receive the HUM command at the start of the game
+    :param sock: the connection socket
+    :return: n: number of homes, homes: list of (x,y) coordinates of homes
+    """
     n = read_int(sock)
     homes = [(read_int(sock), read_int(sock)) for i in range(n)]
     return n, homes
@@ -56,12 +63,22 @@ def receive_hme_command(sock):
 
 
 def receive_upd_command(sock):
+    """
+    receive the UPD command
+    :param sock: the connection socket
+    :return: n: number of changes in the map, changes: list of lists [(x,y),humans,vampires,werewolves]
+    """
     n = read_int(sock)
     changes = [[(read_int(sock), read_int(sock)), read_int(sock), read_int(sock), read_int(sock)] for i in range(n)]
     return n, changes
 
 
 def receive_map_command(sock):
+    """
+    receive MAP command at the start of the game
+    :param sock:
+    :return:
+    """
     return receive_upd_command(sock)
 
 
@@ -79,13 +96,15 @@ def send_nme_command(sock, name):
     sock.send(trame)
 
 
-def send_mov_command(sock, mov_list):
+def send_mov_command(sock, deplacements):
     """
     Sends MOV command to move player's individuals
     :param sock: the connection socket
-    :param mov_list: list of movements: each element is a list in this format [(x_start, y_start), nb_of_indiv_to_move,(x_end, y_end)]
+    :param deplacements: list of 4-uplets (type, number, (x_start, y_start), (x_end, y_end))
     :return: None
     """
+    mov_list = [[deplacement[2], deplacement[1], deplacement[3]] for deplacement in
+                deplacements]  # mov_list: list of movements: each element is a list in this format [(x_start, y_start), nb_of_indiv_to_move,(x_end, y_end)]
     trame = bytes()
     trame += 'MOV'.encode()
     trame += struct.pack("b", len(mov_list))
@@ -94,33 +113,6 @@ def send_mov_command(sock, mov_list):
         trame += struct.pack("b", movement[0][1])  # y : start position
         trame += struct.pack("b", movement[1])  # nb of individuals to move
         trame += struct.pack("b", movement[2][0])  # x : end position
-        trame += struct.pack("b", movement[2][0])  # y : end position
+        trame += struct.pack("b", movement[2][1])  # y : end position
     sock.send(trame)
-
-
-if __name__ == "__main__":
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((HOST, PORT))
-        send_nme_command(s, 'Warewolf')
-
-        while True:
-            command = read_command(s)
-            print(command)
-            if command == 'SET':
-                print(receive_set_command(s))
-            elif command == 'HUM':
-                print(receive_hum_command(s))
-            elif command == 'HME':
-                print(receive_hme_command(s))
-            elif command == 'MAP':
-                print(receive_map_command(s))
-            elif command == 'UPD':
-                print(receive_upd_command(s))
-            elif command == 'BYE':
-                # sleep(2)
-                pass
-            elif command == 'END':
-                break
-            else:
-                raise ValueError('Unknown command')
-# Received b'SET\x05\nHUM\x04\x02\x02\t\x00\t\x02\t\x04HME\x04\x03'
+    sleep(2)
