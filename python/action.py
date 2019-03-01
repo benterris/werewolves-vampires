@@ -7,7 +7,7 @@ class Action():
         self.__deplacements = []
 
     def add_deplacement(self, deplacement):
-        """deplacement est un 4-uplet (type, nombre, (xdepart, ydepart), (xarrivee, yarrivee))_"""
+        """deplacement est un 4-uplet (type, nombre, (xdepart, ydepart), (xarrivee, yarrivee))"""
         self.__deplacements.append(deplacement)
 
     def get_deplacements(self):
