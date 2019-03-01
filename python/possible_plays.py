@@ -22,15 +22,17 @@ class PossiblePlays:
                         if (0 <= entity['x'] + k < m) and (0<= entity['y'] + l <= n):
                             available_cases.append((entity['x'] + k, entity['y'] + l))
                 for individual in range(entity["number"]):
-                    var[(entity["type"], individual, entity["x"], entity["y"])] = available_cases
+                    var[(entity["type"], individual, entity["x"], entity["y"])] = list(available_cases)
 
         P = constraint_program(var)
         P.set_arc_consistency()
         solutions = P.solve_all()
 
-        movements = {}
+
         for solution in solutions:
+            movements = {}
             for (_, _, x_init, y_init), (x_end, y_end) in solution.items():
+
                 if x_init != x_end or y_init != y_end:
                     if (x_init, y_init, x_end, y_end) not in movements:
                         movements[((x_init, y_init, x_end, y_end))] = 1
@@ -39,7 +41,7 @@ class PossiblePlays:
             if len(movements) > 0:
                 action = Action()
                 for (x_init, y_init, x_end, y_end), number in movements.items():
-                    action.add_deplacement(j, number, (x_init, y_init), (x_end, y_end))
+                    action.add_deplacement((j, number, (x_init, y_init), (x_end, y_end)))
                 yield action
 
     @staticmethod
@@ -127,25 +129,25 @@ class PossiblePlays:
                         current_state = PossiblePlays.set_case(current_state, x_init, y_init, {"type":entity1["type"], "number":entity1["number"] - number, "x":x_init, "y":y_init})
                     else:
                         current_state = PossiblePlays.remove_case(current_state, x_init, y_init)
-                if number >=  entity2["number"]:
-                    P_victory = (number/entity2["number"] - 0.5)
-                else:
-                    P_victory = number/(2*entity2["number"])
-                    # Ensemble des issues possibles
-                    # Issue avec 0 (on perd ou tout le mond meurt):
-                current_state = PossiblePlays.remove_case(current_state, x_end, y_end)
-                new_proba = (1 - P_victory) ** number * P_victory + (1-P_victory)
-                states_pile.append((current_state, proba * new_proba, step + 1))
-
-                for possibility in range(1, number+1):
-                    current_state = PossiblePlays.set_case(current_state, x_end, y_end, {"type": entity1["type"],
-                                                                                         "number": possibility,
-                                                                                         "x": x_end,
-                                                                                         "y": y_end})
-                    new_proba = P_victory ** (possibility + 1) * (1 - P_victory) ** (
-                            number - possibility) * binom(number,
-                                                                                  possibility)
+                    if number >=  entity2["number"]:
+                        P_victory = (number/entity2["number"] - 0.5)
+                    else:
+                        P_victory = number/(2*entity2["number"])
+                        # Ensemble des issues possibles
+                        # Issue avec 0 (on perd ou tout le mond meurt):
+                    current_state = PossiblePlays.remove_case(current_state, x_end, y_end)
+                    new_proba = (1 - P_victory) ** number * P_victory + (1-P_victory)
                     states_pile.append((current_state, proba * new_proba, step + 1))
+
+                    for possibility in range(1, number+1):
+                        current_state = PossiblePlays.set_case(current_state, x_end, y_end, {"type": entity1["type"],
+                                                                                             "number": possibility,
+                                                                                             "x": x_end,
+                                                                                             "y": y_end})
+                        new_proba = P_victory ** (possibility + 1) * (1 - P_victory) ** (
+                                number - possibility) * binom(number,
+                                                                                      possibility)
+                        states_pile.append((current_state, proba * new_proba, step + 1))
 
 
 
