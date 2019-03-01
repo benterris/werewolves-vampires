@@ -40,7 +40,7 @@ class constraint_program:
         for x in var:
             for y in var:
                 if x != y and var[x] is var[y]:
-                    raise "variables have same domain object"
+                    raise Exception("variables have same domain object")
 
     def add_constraint(self, x, y, rel):
         """Adds a binary constraint over the variables x and y.
