@@ -15,3 +15,5 @@ heur = Heuristic.heuristic(state)
 fin = time()
 print(heur)
 print(fin - deb, "s")
+
+print(Heuristic.winned(state))

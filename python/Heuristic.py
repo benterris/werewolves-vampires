@@ -104,3 +104,22 @@ class Heuristic:
             return -heur
         else:
             return heur
+
+    @staticmethod
+    def winned(state):
+        """Indique si un camp a gagné (renvoie "V", "W", ""  ou "draw" si il n'y a ni loup ni vampire)"""
+        still_vampires = False
+        still_wearwolves = False
+        for entity in state:
+            if entity["type"] == "V":
+                still_vampires = True
+            elif entity["type"] == "W":
+                still_wearwolves = True
+        if (not still_wearwolves) and (not still_vampires):
+            return "draw"
+        elif not still_wearwolves:
+            return "V"
+        elif not still_vampires:
+            return "W"
+        else:
+            return ""
