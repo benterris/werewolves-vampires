@@ -10,7 +10,7 @@ state_1 = [
     {"type": "V", "number": 2, "x": 4, "y": 2},
 ]
 state = [
-    {"type": "W", "number": 2, "x": 0, "y": 0},
+    {"type": "H", "number": 2, "x": 0, "y": 0},
     {"type": "V", "number": 2, "x": 0, "y": 1},
 ]
 
