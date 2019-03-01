@@ -10,7 +10,7 @@ class PossiblePlays:
     def get_possible_plays(state, m, n, player=0):
         """player : 0 pour V, 1 pour W
         m et n sont la taille de la grille
-        (m coordonnée en x et m en y)"""
+        (m coordonnée en x et n en y)"""
 
         j = "V" if player==0 else "W"
         var = {}
@@ -50,10 +50,11 @@ class PossiblePlays:
         # On cherche les batailles aléatoires
         movements = action.get_deplacements()
         states_pile = [(state, 1, 0)] #Etat, proba, étape
+        next_states = []
         while len(states_pile) > 0:
             current_state, proba, step = states_pile.pop()
             if step == len(movements):
-                yield current_state, proba
+                next_states.append((current_state, proba))
             else:
                 _, number, (x_init, y_init), (x_end, y_end) = movements[step]
                 entity1 = PossiblePlays.what_in_that_case(current_state, x_init, y_init)
@@ -148,6 +149,8 @@ class PossiblePlays:
                                 number - possibility) * binom(number,
                                                                                       possibility)
                         states_pile.append((current_state, proba * new_proba, step + 1))
+        #On renvoie les états possibles dans l'ordre de leur proba
+        return sorted(next_states, key=lambda t: 1-t[1])
 
 
 
