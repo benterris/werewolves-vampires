@@ -6,6 +6,9 @@ class Action():
     def __init__(self):
         self.__deplacements = []
 
+    def __repr__(self):
+        return ' | '.join([str(move) for move in self.__deplacements])
+
     def add_deplacement(self, deplacement):
         """deplacement est un 4-uplet (type, nombre, (xdepart, ydepart), (xarrivee, yarrivee))"""
         self.__deplacements.append(deplacement)
