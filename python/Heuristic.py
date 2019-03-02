@@ -123,3 +123,8 @@ class Heuristic:
             return "W"
         else:
             return ""
+
+    @staticmethod
+    def is_terminal_state(state):
+        """Return true if the state is terminal (either camp has won)"""
+        return not Heuristic.winned(state) == ""

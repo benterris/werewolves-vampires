@@ -2,7 +2,7 @@ import random
 
 
 class State:
-    def __init__(self, x_max, y_max):
+    def __init__(self, x_max, y_max, states=[]):
         """
         initiates State class and defines its states to empty list
         :param x_max: maximum x bound
@@ -10,7 +10,7 @@ class State:
         """
         self.x_max = x_max
         self.y_max = y_max
-        self.states = []
+        self.states = states
 
     def __getitem__(self, pos):
         return self.states[pos]
