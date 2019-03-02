@@ -79,7 +79,7 @@ class PossiblePlays:
                         current_state = PossiblePlays.set_case(current_state, x_end, y_end,
                                                                {"type": entity1["type"], "number": number + entity2["number"], "x": x_end,
                                                                 "y": y_end})
-                        states_pile.append((current_state, proba, step + 1))
+                    states_pile.append((current_state, proba, step + 1))
 
                 elif entity2["type"] == "H" and number >= entity2["number"]:
                     if entity1["number"] > number:
