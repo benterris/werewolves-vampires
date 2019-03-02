@@ -1,5 +1,6 @@
 from possible_plays import PossiblePlays
 from action import Action
+from state import State
 
 
 state_1 = [
@@ -60,5 +61,24 @@ for f_state, proba in final_states:
     print_state(f_state, 5, 5)
     print("Avec la proba", proba)
 
+
+print("-----------------------------------------------------------------------------------------------")
+print()
+state = State(5, 5)
+state.states = [{'number': 5, 'type': 'W', 'x': 2, 'y': 3},
+                {'number': 4, 'type': 'V', 'x': 2, 'y': 2}]
+
+action = Action()
+action.add_deplacement(('V', 4, (2, 2), (2, 3)))
+print("Etat original : ")
+print_state(state, 5, 5)
+print("Avec l'action :")
+for movement in action.get_deplacements():
+    print(movement)
+print("On obtient les états : ")
+final_states = PossiblePlays.get_next_states(state, action)
+for f_state, proba in final_states:
+    print_state(f_state, 5, 5)
+    print("Avec la proba", proba)
 
 

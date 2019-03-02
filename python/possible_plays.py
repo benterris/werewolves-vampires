@@ -101,11 +101,18 @@ class PossiblePlays:
                         current_state = PossiblePlays.remove_case(current_state, x_init, y_init)
                     P_victory = number / (2*entity2["number"])
                     #Ensemble des issues possibles
-                    #Issue avec 0 (on perd ou tout le mond meurt):
+                    #On perd et tout le monde meurt ou on gagne et tt le monde meurt
+                    new_proba = (1-P_victory) * P_victory**entity2["number"] + P_victory * (1-P_victory)**number
                     current_state = PossiblePlays.remove_case(current_state, x_end, y_end)
-                    new_proba =(1-P_victory)**(entity2["number"] + number) * P_victory + (1-P_victory)
                     states_pile.append((current_state, proba * new_proba, step + 1))
-
+                    #On perd mais des humains survivent
+                    for possibility in range(1, entity2["number"]+1):
+                        current_state = PossiblePlays.set_case(current_state, x_end, y_end, {"type": entity2["type"],
+                                                                                             "number": possibility, "x": x_end,
+                                                                                             "y": y_end})
+                        new_proba = (1-P_victory)**(possibility+1) * P_victory**(entity2["number"] - possibility) * binom(entity2["number"], possibility)
+                        states_pile.append((current_state, proba * new_proba, step + 1))
+                    #On gagne
                     for possibility in range(1, number + entity2["number"]+1):
                         current_state = PossiblePlays.set_case(current_state, x_end, y_end, {"type": entity1["type"],
                                                                                              "number": possibility, "x": x_end,
@@ -124,6 +131,14 @@ class PossiblePlays:
                                                                                          "x": x_end,
                                                                                          "y": y_end})
                     states_pile.append((current_state, proba, step + 1))
+
+                elif 1.5 * number <= entity2["number"]:
+                    # On arrive sur des ennemis et on se fait défoncer
+                    if entity1["number"] > number:
+                        current_state = PossiblePlays.set_case(current_state, x_init, y_init, {"type":entity1["type"], "number":entity1["number"] - number, "x":x_init, "y":y_init})
+                    else:
+                        current_state = PossiblePlays.remove_case(current_state, x_init, y_init)
+                    states_pile.append((current_state, proba, step + 1))
                 else:
                     #Bataille contre ennemis
                     if entity1["number"] > number:
@@ -135,10 +150,17 @@ class PossiblePlays:
                     else:
                         P_victory = number/(2*entity2["number"])
                         # Ensemble des issues possibles
-                        # Issue avec 0 (on perd ou tout le mond meurt):
+                    #On perd et tout le monde meurt ou on gagne et tt le monde meurt
+                    new_proba = (1-P_victory) * P_victory**entity2["number"] + P_victory * (1-P_victory)**number
                     current_state = PossiblePlays.remove_case(current_state, x_end, y_end)
-                    new_proba = (1 - P_victory) ** number * P_victory + (1-P_victory)
                     states_pile.append((current_state, proba * new_proba, step + 1))
+                    #On perd
+                    for possibility in range(1, entity2["number"]+1):
+                        current_state = PossiblePlays.set_case(current_state, x_end, y_end, {"type": entity2["type"],
+                                                                                             "number": possibility, "x": x_end,
+                                                                                             "y": y_end})
+                        new_proba = (1-P_victory)**(possibility+1) * P_victory**(entity2["number"] - possibility) * binom(entity2["number"], possibility)
+                        states_pile.append((current_state, proba * new_proba, step + 1))
 
                     for possibility in range(1, number+1):
                         current_state = PossiblePlays.set_case(current_state, x_end, y_end, {"type": entity1["type"],
