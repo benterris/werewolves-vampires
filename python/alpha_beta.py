@@ -1,9 +1,11 @@
 try:
+    import pydash as _
     import utilities
     import config
     from state import State
     from possible_plays_improved import PossiblePlays
     from Heuristic import Heuristic
+    import datetime
 except:
     from python import utilities
     from python import config
@@ -18,10 +20,10 @@ class AlphaBeta:
     """
 
     def __init__(self):
-        self.nodes = config.MAX_NODES
+        self.start_time = None
 
-    def __reset_nodes(self):
-        self.nodes = config.MAX_NODES
+    def __reset_start_time(self):
+        self.start_time = datetime.datetime.now()
 
     def get_best_next_action(self, state: State, player: str):
         """
@@ -30,7 +32,7 @@ class AlphaBeta:
         state: a State object
         player: 'V' or 'W'
         """
-        self.__reset_nodes()
+        self.__reset_start_time()
 
         _value, best_action_path = self.__max_value(
             state, -float('inf'), float('inf'), player, config.MAX_DEPTH)
@@ -43,11 +45,13 @@ class AlphaBeta:
         """
         player_number = AlphaBeta.__convert_player_string_to_number(
             player)
-        if depth == 0 or self.nodes <= 0 or Heuristic.is_terminal_state(state):
+        if depth == 0 or self.__is_elapsed_time() or Heuristic.is_terminal_state(state):
             return Heuristic.heuristic(state, player_number, player_number), []
 
         successors_with_action = AlphaBeta.__get_successors_with_actions(
             state, player_number)
+        successors_with_action = _.sort_by(successors_with_action, lambda x: Heuristic.heuristic(
+            State(state.x_max, state.y_max, x[0]), player_number, player_number), reverse=True)
         value = alpha
         best_action_path = []
         for s in successors_with_action:
@@ -56,19 +60,20 @@ class AlphaBeta:
             if value > alpha:
                 alpha = value
                 best_action_path = [s[1]] + action_path
-            if alpha >= beta:
+            if alpha >= beta or self.__is_elapsed_time():
                 break
-        self.nodes -= 1
         return alpha, best_action_path
 
     def __min_value(self, state, alpha, beta, player, depth):
         player_number = AlphaBeta.__convert_player_string_to_number(
             player)
-        if depth == 0 or self.nodes <= 0 or Heuristic.is_terminal_state(state):
+        if depth == 0 or self.__is_elapsed_time() or Heuristic.is_terminal_state(state):
             return Heuristic.heuristic(state, 1 - player_number, player_number), []
 
         successors_with_action = AlphaBeta.__get_successors_with_actions(
             state, player_number)
+        successors_with_action = _.sort_by(successors_with_action, lambda x: Heuristic.heuristic(
+            State(state.x_max, state.y_max, x[0]), 1 - player_number, player_number))
         value = beta
         best_action_path = []
         for s in successors_with_action:
@@ -77,9 +82,8 @@ class AlphaBeta:
             if value < beta:
                 beta = value
                 best_action_path = [s[1]] + action_path
-            if alpha >= beta:
+            if alpha >= beta or self.__is_elapsed_time():
                 break
-        self.nodes -= 1
         return beta, best_action_path
 
     @staticmethod
@@ -96,6 +100,9 @@ class AlphaBeta:
         successors_with_action = [(PossiblePlays.get_next_states(
             state, action)[0][0], action) for action in possible_actions]
         return successors_with_action
+
+    def __is_elapsed_time(self):
+        return datetime.datetime.now() - self.start_time > datetime.timedelta(milliseconds=config.MAX_TIME_MILLISECONDS)
 
     @staticmethod
     def __first_items(generator, n_items):

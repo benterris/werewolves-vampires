@@ -1,5 +1,9 @@
 import random
-from python.action import Action
+try:
+    from action import Action
+except:
+    from python.action import Action
+
 
 class State:
     def __init__(self, x_max, y_max, states=[]):
@@ -42,7 +46,7 @@ class State:
         try:
             self.states.remove(self.findObjectAtLocation(x, y))
         except ValueError:
-            pass # TODO check this
+            pass  # TODO check this
             # raise ValueError('Cannot clear cell ({},{})'.format(x, y))
 
     # =========
@@ -55,12 +59,14 @@ class State:
         Return a random number in {x-1, x, x+1}, contained in the limit [0, size - 1]
         Used for the example of random moves
         """
-        possible_add = [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (-1, -1), (-1, 1), (1, -1)]
+        possible_add = [(0, 1), (0, -1), (1, 0), (-1, 0),
+                        (1, 1), (-1, -1), (-1, 1), (1, -1)]
         while True:
             toAdd = possible_add[random.randint(0, len(possible_add) - 1)]
             if pos[0] + toAdd[0] <= self.x_max-1 and pos[1] + toAdd[1] <= self.y_max-1 and pos[0] + toAdd[0] >= 0 and pos[
-                1] + toAdd[1] >= 0:
-                print('move from', pos[0], pos[1], ' To', pos[0] + toAdd[0], pos[1] + toAdd[1],'-----', self.x_max-1, self.y_max-1)
+                    1] + toAdd[1] >= 0:
+                print('move from', pos[0], pos[1], ' To', pos[0] + toAdd[0],
+                      pos[1] + toAdd[1], '-----', self.x_max-1, self.y_max-1)
                 return pos[0] + toAdd[0], pos[1] + toAdd[1]
 
     def findObjectAtLocation(self, x, y):
@@ -83,7 +89,8 @@ class State:
             el = self[i]
             if el['type'] == player:
                 moveTo = self.randomContiguous1D((el['x'], el['y']))
-                action.add_deplacement((player, el['number'], (el['x'], el['y']), moveTo))
+                action.add_deplacement(
+                    (player, el['number'], (el['x'], el['y']), moveTo))
             i += 1
         return action
 
@@ -103,7 +110,8 @@ class State:
             if pos_number:  # If a non null value is found
                 state_line['type'] = types[pos_number[0]]
                 state_line['number'] = pos_number[1]
-                occupied_cell = self.findObjectAtLocation(state_line['x'], state_line['y'])
+                occupied_cell = self.findObjectAtLocation(
+                    state_line['x'], state_line['y'])
                 if occupied_cell:  # If the cell is already in states, remove it
                     self.states.remove(occupied_cell)
                 self.states.append(state_line)
