@@ -1,6 +1,11 @@
-from constraint_programming import constraint_program
-from action import Action
-from scipy.special import binom
+try:
+    from constraint_programming import constraint_program
+    from action import Action
+    from scipy.special import binom
+except:
+    from python.constraint_programming import constraint_program
+    from python.action import Action
+    from scipy.special import binom
 
 
 class PossiblePlays:

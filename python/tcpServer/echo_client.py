@@ -96,13 +96,14 @@ def send_nme_command(sock, name):
     sock.send(trame)
 
 
-def send_mov_command(sock, deplacements):
+def send_mov_command(sock, action):
     """
     Sends MOV command to move player's individuals
     :param sock: the connection socket
     :param deplacements: list of 4-uplets (type, number, (x_start, y_start), (x_end, y_end))
     :return: None
     """
+    deplacements = action.get_deplacements()
     mov_list = [[deplacement[2], deplacement[1], deplacement[3]] for deplacement in
                 deplacements]  # mov_list: list of movements: each element is a list in this format [(x_start, y_start), nb_of_indiv_to_move,(x_end, y_end)]
     trame = bytes()

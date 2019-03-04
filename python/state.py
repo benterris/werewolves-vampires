@@ -1,5 +1,5 @@
 import random
-
+from python.action import Action
 
 class State:
     def __init__(self, x_max, y_max, states=[]):
@@ -42,7 +42,8 @@ class State:
         try:
             self.states.remove(self.findObjectAtLocation(x, y))
         except ValueError:
-            raise ValueError('Cannot clear cell ({},{})'.format(x, y))
+            pass # TODO check this
+            # raise ValueError('Cannot clear cell ({},{})'.format(x, y))
 
     # =========
     # UTILITIES
@@ -77,14 +78,14 @@ class State:
         Here the player moves all his pawns randomly
         """
         i = 0
-        mov_list = []
+        action = Action()
         while i < len(self.states):
             el = self[i]
             if el['type'] == player:
                 moveTo = self.randomContiguous1D((el['x'], el['y']))
-                mov_list.append((player, el['number'], (el['x'], el['y']), moveTo))
+                action.add_deplacement((player, el['number'], (el['x'], el['y']), moveTo))
             i += 1
-        return mov_list
+        return action
 
     def update(self, changes):
         """
