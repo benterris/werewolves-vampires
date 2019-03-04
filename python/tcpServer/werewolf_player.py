@@ -1,5 +1,5 @@
 from python.tcpServer.echo_client import *
-
+from python.alpha_beta import AlphaBeta
 HOST = '127.0.0.1'  # The server's hostname or IP address
 PORT = 5555  # The port used by the server
 
@@ -35,7 +35,10 @@ if __name__ == "__main__":
                 upd = receive_upd_command(s)
                 print(upd)
                 game.update(upd[-1])
+
                 send_mov_command(s, game.next_move_example_random('W'))
+                # send_mov_command(s, AlphaBeta.get_best_next_action(game, 'W'))
+
                 # TODO add a function that makes the next move (returns lov_list)
                 # TODO send mov_list
             else:
