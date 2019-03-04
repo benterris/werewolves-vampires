@@ -96,8 +96,8 @@ class Heuristic:
                                 P_victoire = n1/(2*n2)
                             elif n1 > n2 and current_player == 1:
                                 P_victoire = 1 - (n2/n1 - 0.5)
-                            heur += M3 * (1/ntour**2) * n1 * P_victoire
-                            heur -= M3 * (1/ntour**2) * n2 * (1-P_victoire)
+                            heur += M4 * (1/ntour**2) * n1 * P_victoire
+                            heur -= M4 * (1/ntour**2) * n2 * (1-P_victoire)
 
        # print("Etape 3 : ", heur)
 
