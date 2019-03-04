@@ -55,15 +55,20 @@ class PossiblePlays:
                 i //= len(cases)+1
                 number1 = (entity["number"] + 1) // 2
                 number2 = entity["number"] - number1
-                if not (i1 == 0 or i2 <= i1 or number2 == 0):
-
-                    action.add_deplacement((entity["type"], number1, (entity["x"], entity["y"]),
+                at_least_one_stack_is_splitted = False
+                if not (i1 == 0 or i2 < i1 or number2 == 0):
+                    if i1 == i2:
+                        action.add_deplacement((entity["type"], entity["number"], (entity["x"], entity["y"]),
+                                                cases[i1 - 1]))
+                    else:
+                        action.add_deplacement((entity["type"], number1, (entity["x"], entity["y"]),
                                                    cases[i1-1]))
 
-                    action.add_deplacement((entity["type"], number2, (entity["x"], entity["y"]),
+                        action.add_deplacement((entity["type"], number2, (entity["x"], entity["y"]),
                                                    cases[i2 - 1]))
+                        at_least_one_stack_is_splitted = True
 
-            if len(action.get_deplacements())>0:
+            if len(action.get_deplacements())>0 and at_least_one_stack_is_splitted:
                 yield action
 
 
