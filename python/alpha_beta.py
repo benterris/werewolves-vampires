@@ -3,13 +3,13 @@ try:
     import utilities
     import config
     from state import State
-    from possible_plays import PossiblePlays
+    # from possible_plays_improved import PossiblePlays
     from Heuristic import Heuristic
 except:
     from python import utilities
     from python import config
     from python.state import State
-    from python.possible_plays import PossiblePlays
+    from python.possible_plays_improved import PossiblePlays
     from python.Heuristic import Heuristic
 
 

@@ -42,7 +42,8 @@ class State:
         try:
             self.states.remove(self.findObjectAtLocation(x, y))
         except ValueError:
-            raise ValueError('Cannot clear cell ({},{})'.format(x, y))
+            pass # TODO check this
+            # raise ValueError('Cannot clear cell ({},{})'.format(x, y))
 
     # =========
     # UTILITIES

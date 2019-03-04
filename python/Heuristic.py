@@ -1,3 +1,4 @@
+import math
 class Heuristic:
 
     @staticmethod
@@ -41,7 +42,7 @@ class Heuristic:
                             ntour -= 1
                         else:
                             ntour += 1
-                        heur += M2 * (1/ntour) * entite["number"]
+                        heur += M2 * (1/ntour)**2 * entite["number"]
                     elif entite2['type'] == "W" and entite2['number'] >= entite["number"]:
                         ntour = 2 * \
                             Heuristic.distance(
@@ -50,7 +51,7 @@ class Heuristic:
                             ntour -= 1
                         else:
                             ntour += 1
-                        heur -= M2 * (1/ntour) * entite["number"]
+                        heur -= M2 * (1/ntour)**2 * entite["number"]
        # print("Etape 2 : ", heur)
 
         for entite in state:
