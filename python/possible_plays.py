@@ -42,7 +42,8 @@ class PossiblePlays:
                 action = Action()
                 for (x_init, y_init, x_end, y_end), number in movements.items():
                     action.add_deplacement((j, number, (x_init, y_init), (x_end, y_end)))
-                yield action
+                if action.is_valid():
+                    yield action
 
     @staticmethod
     def get_next_states(state, action):

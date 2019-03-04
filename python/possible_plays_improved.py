@@ -34,8 +34,8 @@ class PossiblePlays:
                 if i % (len(cases)+1) != 0:
                     action.add_deplacement((entity["type"], entity["number"], (entity["x"], entity["y"]), cases[(i % (len(cases)+1))-1]))
                 i //= len(cases)+1
-
-            yield action
+            if action.is_valid():
+                yield action
 
         #On parcourt les possibilités de séparer les stacks en 2:
         product_of_cases = 1
@@ -48,6 +48,7 @@ class PossiblePlays:
 
         for i in range(1, product_of_cases):
             action = Action()
+            at_least_one_stack_is_splitted = False
             for entity, cases in var:
                 i1 = i % len(cases)+1
                 i //= len(cases)+1
@@ -55,7 +56,7 @@ class PossiblePlays:
                 i //= len(cases)+1
                 number1 = (entity["number"] + 1) // 2
                 number2 = entity["number"] - number1
-                at_least_one_stack_is_splitted = False
+
                 if not (i1 == 0 or i2 < i1 or number2 == 0):
                     if i1 == i2:
                         action.add_deplacement((entity["type"], entity["number"], (entity["x"], entity["y"]),
@@ -68,7 +69,7 @@ class PossiblePlays:
                                                    cases[i2 - 1]))
                         at_least_one_stack_is_splitted = True
 
-            if len(action.get_deplacements())>0 and at_least_one_stack_is_splitted:
+            if len(action.get_deplacements())>0 and at_least_one_stack_is_splitted and action.is_valid():
                 yield action
 
 
