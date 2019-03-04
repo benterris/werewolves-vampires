@@ -42,4 +42,5 @@ if __name__ == "__main__":
                 # TODO add a function that makes the next move (returns lov_list)
                 # TODO send mov_list
             else:
-                raise ValueError('Unknown command')
+                pass
+                # raise ValueError('Unknown command')
