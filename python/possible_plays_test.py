@@ -1,4 +1,4 @@
-from possible_plays import PossiblePlays
+from possible_plays_improved import PossiblePlays
 from action import Action
 from state import State
 
@@ -65,11 +65,11 @@ for f_state, proba in final_states:
 print("-----------------------------------------------------------------------------------------------")
 print()
 state = State(5, 5)
-state.states = [{'number': 5, 'type': 'W', 'x': 2, 'y': 3},
+state.states = [{'number': 4, 'type': 'W', 'x': 2, 'y': 3},
                 {'number': 4, 'type': 'V', 'x': 2, 'y': 2}]
 
 action = Action()
-action.add_deplacement(('V', 4, (2, 2), (2, 3)))
+action.add_deplacement(('V', 3, (2, 2), (2, 3)))
 print("Etat original : ")
 print_state(state, 5, 5)
 print("Avec l'action :")

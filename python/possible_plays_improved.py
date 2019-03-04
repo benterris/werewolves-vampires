@@ -1,10 +1,6 @@
+from constraint_programming import constraint_program
+from action import Action
 from scipy.special import binom
-try:
-    from constraint_programming import constraint_program
-    from action import Action
-except:
-    from python.constraint_programming import constraint_program
-    from python.action import Action
 
 
 class PossiblePlays:
@@ -17,37 +13,65 @@ class PossiblePlays:
         (m coordonnée en x et n en y)"""
 
         j = "V" if player==0 else "W"
-        var = {}
+        var = []
         for entity in state:
             if entity["type"] == j:
                 available_cases = []
                 for k in[-1, 0, 1]:
                     for l in [-1, 0, 1]:
-                        if (0 <= entity['x'] + k < m) and (0<= entity['y'] + l <= n):
+                        if (0 <= entity['x'] + k < m) and (0<= entity['y'] + l <= n) and (k != 0 or l != 0):
                             available_cases.append((entity['x'] + k, entity['y'] + l))
-                for individual in range(entity["number"]):
-                    var[(entity["type"], individual, entity["x"], entity["y"])] = list(available_cases)
-
-        P = constraint_program(var)
-        P.set_arc_consistency()
-        solutions = P.solve_all()
+                var.append((entity,list(available_cases)))
+        product_of_cases = 1
+        for _, cases in var:
+            product_of_cases *= len(cases)+1
 
 
-        for solution in solutions:
-            movements = {}
-            for (_, _, x_init, y_init), (x_end, y_end) in solution.items():
+        #On parcourt toutes les possibilités de déplacement de stacks:
+        for i in range(1, product_of_cases):
+            action = Action()
+            for entity, cases in var:
+                if i % (len(cases)+1) != 0:
+                    action.add_deplacement((entity["type"], entity["number"], (entity["x"], entity["y"]), cases[(i % (len(cases)+1))-1]))
+                i //= len(cases)+1
+            if action.is_valid():
+                yield action
 
-                if x_init != x_end or y_init != y_end:
-                    if (x_init, y_init, x_end, y_end) not in movements:
-                        movements[((x_init, y_init, x_end, y_end))] = 1
+        #On parcourt les possibilités de séparer les stacks en 2:
+        product_of_cases = 1
+        for _, cases in var:
+            product_of_cases *= (len(cases)+1)**2
+
+
+
+
+
+        for i in range(1, product_of_cases):
+            action = Action()
+            at_least_one_stack_is_splitted = False
+            for entity, cases in var:
+                i1 = i % len(cases)+1
+                i //= len(cases)+1
+                i2 = i % len(cases)+1
+                i //= len(cases)+1
+                number1 = (entity["number"] + 1) // 2
+                number2 = entity["number"] - number1
+
+                if not (i1 == 0 or i2 < i1 or number2 == 0):
+                    if i1 == i2:
+                        action.add_deplacement((entity["type"], entity["number"], (entity["x"], entity["y"]),
+                                                cases[i1 - 1]))
                     else:
-                        movements[((x_init, y_init, x_end, y_end))] += 1
-            if len(movements) > 0:
-                action = Action()
-                for (x_init, y_init, x_end, y_end), number in movements.items():
-                    action.add_deplacement((j, number, (x_init, y_init), (x_end, y_end)))
-                if action.is_valid():
-                    yield action
+                        action.add_deplacement((entity["type"], number1, (entity["x"], entity["y"]),
+                                                   cases[i1-1]))
+
+                        action.add_deplacement((entity["type"], number2, (entity["x"], entity["y"]),
+                                                   cases[i2 - 1]))
+                        at_least_one_stack_is_splitted = True
+
+            if len(action.get_deplacements())>0 and at_least_one_stack_is_splitted and action.is_valid():
+                yield action
+
 
     @staticmethod
     def get_next_states(state, action):
@@ -56,10 +80,23 @@ class PossiblePlays:
         movements = action.get_deplacements()
         states_pile = [(state, 1, 0)] #Etat, proba, étape
         next_states = []
+        there_is_a_probable_state = False
         while len(states_pile) > 0:
             current_state, proba, step = states_pile.pop()
             if step == len(movements):
-                next_states.append((current_state, proba))
+                if proba >= 0.3 and not there_is_a_probable_state:
+                    next_states = [(current_state, proba)]
+                    there_is_a_probable_state = True
+                elif proba >= 0.3 and there_is_a_probable_state:
+                    next_states.append((current_state, proba))
+                elif not there_is_a_probable_state:
+                    isMostProbable = True
+                    for state, proba2 in next_states:
+                        if proba2 > proba:
+                            isMostProbable = False
+                            break
+                    if isMostProbable:
+                        next_states = [(current_state, proba)]
             else:
                 _, number, (x_init, y_init), (x_end, y_end) = movements[step]
                 entity1 = PossiblePlays.what_in_that_case(current_state, x_init, y_init)
