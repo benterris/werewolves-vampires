@@ -3,9 +3,11 @@ import pydash as _
 
 def other_player(player):
     """
-    Given a player ('A' or 'B'), return its opponent
+    Given a player ('V' or 'W'), return its opponent
     """
-    return 'B' if player == 'A' else 'A'
+    if not player in ['V', 'W']:
+        raise Exception("player " + player + " is unknown")
+    return 'W' if player == 'V' else 'V'
 
 
 def next_states(state, player):

@@ -1,4 +1,6 @@
-    
+from state import State
+
+
 class bcolors:
     MAGENTA = '\033[95m'
     BLUE = '\033[94m'
@@ -10,8 +12,8 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
-def print_state(state, N, M):
-    _print_map(_make_map(state, N, M))
+def print_state(state: State):
+    _print_map(_make_map(state, state.x_max, state.y_max))
 
 
 def _make_map(state, N, M):
