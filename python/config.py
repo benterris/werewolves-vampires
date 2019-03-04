@@ -7,3 +7,4 @@ map = ""
 # Alpha-beta
 MAX_DEPTH = 5
 MAX_ACTIONS = 100
+MAX_NODES = 2000

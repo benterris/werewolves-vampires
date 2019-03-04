@@ -2,7 +2,7 @@ import pydash as _
 import utilities
 import config
 from state import State
-from possible_plays import PossiblePlays
+from possible_plays_improved import PossiblePlays
 from Heuristic import Heuristic
 
 
@@ -11,27 +11,33 @@ class AlphaBeta:
     Class to perform the alpha-beta algorithm
     """
 
-    @staticmethod
-    def get_best_next_action(state: State, player: str):
+    def __init__(self):
+        self.nodes = config.MAX_NODES
+
+    def __reset_nodes(self):
+        self.nodes = config.MAX_NODES
+
+    def get_best_next_action(self, state: State, player: str):
         """
         Return the best move for the player according to alpha-beta
 
         state: a State object
         player: 'V' or 'W'
         """
-        _value, best_action_path = AlphaBeta.__max_value(
+        self.__reset_nodes()
+
+        _value, best_action_path = self.__max_value(
             state, -float('inf'), float('inf'), player, config.MAX_DEPTH)
         return best_action_path[0]
 
-    @staticmethod
-    def __max_value(state: State, alpha: float, beta: float, player: str, depth: int):
+    def __max_value(self, state: State, alpha: float, beta: float, player: str, depth: int):
         """
         Computes the best possible value obtainable for the player maximising the heuristic
         Returns: the alpha value of the node and the action path to get this value
         """
         player_number = AlphaBeta.__convert_player_string_to_number(
             player)
-        if depth == 0 or Heuristic.is_terminal_state(state):
+        if depth == 0 or self.nodes <= 0 or Heuristic.is_terminal_state(state):
             return Heuristic.heuristic(state, player_number, player_number), []
 
         successors_with_action = AlphaBeta.__get_successors_with_actions(
@@ -39,20 +45,20 @@ class AlphaBeta:
         value = alpha
         best_action_path = []
         for s in successors_with_action:
-            value, action_path = AlphaBeta.__min_value(
+            value, action_path = self.__min_value(
                 State(state.x_max, state.y_max, s[0]), alpha, beta, utilities.other_player(player), depth - 1)
             if value > alpha:
                 alpha = value
                 best_action_path = [s[1]] + action_path
             if alpha >= beta:
                 break
+        self.nodes -= 1
         return alpha, best_action_path
 
-    @staticmethod
-    def __min_value(state, alpha, beta, player, depth):
+    def __min_value(self, state, alpha, beta, player, depth):
         player_number = AlphaBeta.__convert_player_string_to_number(
             player)
-        if depth == 0 or Heuristic.is_terminal_state(state):
+        if depth == 0 or self.nodes <= 0 or Heuristic.is_terminal_state(state):
             return Heuristic.heuristic(state, 1 - player_number, player_number), []
 
         successors_with_action = AlphaBeta.__get_successors_with_actions(
@@ -60,13 +66,14 @@ class AlphaBeta:
         value = beta
         best_action_path = []
         for s in successors_with_action:
-            value, action_path = AlphaBeta.__max_value(
+            value, action_path = self.__max_value(
                 State(state.x_max, state.y_max, s[0]), alpha, beta, utilities.other_player(player), depth - 1)
             if value < beta:
                 beta = value
                 best_action_path = [s[1]] + action_path
             if alpha >= beta:
                 break
+        self.nodes -= 1
         return beta, best_action_path
 
     @staticmethod
