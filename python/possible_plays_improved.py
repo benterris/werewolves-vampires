@@ -24,7 +24,7 @@ class PossiblePlays:
                 available_cases = []
                 for k in[-1, 0, 1]:
                     for l in [-1, 0, 1]:
-                        if (0 <= entity['x'] + k < m) and (0<= entity['y'] + l <= n) and (k != 0 or l != 0):
+                        if (0 <= entity['x'] + k < m) and (0<= entity['y'] + l < n) and (k != 0 or l != 0):
                             available_cases.append((entity['x'] + k, entity['y'] + l))
                 var.append((entity,list(available_cases)))
         product_of_cases = 1

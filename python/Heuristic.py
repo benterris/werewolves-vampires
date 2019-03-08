@@ -40,8 +40,6 @@ class Heuristic:
                                 entite["x"], entite["y"], entite2["x"], entite2["y"])
                         if current_player == 0:
                             ntour -= 1
-                        else:
-                            ntour += 1
                         heur += M2 * (1/ntour)**2 * entite["number"]
                     elif entite2['type'] == "W" and entite2['number'] >= entite["number"]:
                         ntour = 2 * \
@@ -49,8 +47,7 @@ class Heuristic:
                                 entite["x"], entite["y"], entite2["x"], entite2["y"])
                         if current_player == 1:
                             ntour -= 1
-                        else:
-                            ntour += 1
+
                         heur -= M2 * (1/ntour)**2 * entite["number"]
        # print("Etape 2 : ", heur)
 
@@ -65,8 +62,7 @@ class Heuristic:
                                     entite["x"], entite["y"], entite2["x"], entite2["y"])
                             if current_player == 0:
                                 ntour -= 1
-                            else:
-                                ntour += 1
+
                             heur += M3 * (1/ntour**2) * n2
                         elif n2 >= 1.5 * n1:
                             ntour = 2 * \
@@ -74,8 +70,7 @@ class Heuristic:
                                     entite["x"], entite["y"], entite2["x"], entite2["y"])
                             if current_player == 1:
                                 ntour -= 1
-                            else:
-                                ntour += 1
+
                             heur -= M3 * (1 / ntour**2) * n1
                         elif n1 > n2:
                             ntour = 2 * \
@@ -83,8 +78,7 @@ class Heuristic:
                                     entite["x"], entite["y"], entite2["x"], entite2["y"])
                             if current_player == 1:
                                 ntour -= 1
-                            else:
-                                ntour += 1
+
                             P_victoire = 0
                             if n1 == n2:
                                 P_victoire = 0.5

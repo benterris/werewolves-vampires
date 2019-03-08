@@ -5,6 +5,8 @@ PORT = 5555  # The port used by the server
 
 if __name__ == "__main__":
 
+    alphabeta = AlphaBeta()
+
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((HOST, PORT))
         send_nme_command(s, 'Vampire')
@@ -38,7 +40,7 @@ if __name__ == "__main__":
                 game.update(upd[-1])
 
                 # send_mov_command(s, game.next_move_example_random('V'))
-                send_mov_command(s, AlphaBeta.get_best_next_action(game, 'V'))
+                send_mov_command(s, alphabeta.get_best_next_action(game, 'V'))
                 # TODO add a function that makes the next move (returns lov_list)
                 # TODO send mov_list
             else:

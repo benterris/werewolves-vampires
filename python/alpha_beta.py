@@ -12,6 +12,7 @@ except:
     from python.state import State
     from python.possible_plays_improved import PossiblePlays
     from python.Heuristic import Heuristic
+    import datetime
 
 
 class AlphaBeta:
