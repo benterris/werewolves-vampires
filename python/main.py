@@ -1,37 +1,51 @@
-import sys
-from config import *
+import argparse
+import socket
 
-def main(args):
-    """Let's go"""
-    # 0. Lire les arguments
-    if len(args) >= 3:
-        server_ip = args[-2]
-        server_port = args[-1]
+try:
+    from tcpServer import werewolf_player, vampire_player
+    from tcpServer.echo_client import *
+    import state
 
+except:
+    from python.tcpServer import werewolf_player, vampire_player
+    from python.tcpServer.echo_client import *
+    from python import state
 
+def generic_player(host, port):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.connect((host, port))
+        send_nme_command(s, 'Equipe4')
+        game = None
+        command = read_command(s)
+        print(command)
 
-    # 2. Etablir la connexion avec le serveur
+        if command == 'SET':
+            set = receive_set_command(s)
+            print(set)
+            game = state.State(set[1], set[0])
+        elif command == 'HUM':
+            print(receive_hum_command(s))
+        elif command == 'HME':
+            x,y = receive_hme_command(s)
+            print(x,y)
+            print(game.findObjectAtLocation(x,y)['type'])
 
-    # 3. Envoyer les infos au serveur
-
-    # 4. Recevoir les infos de map du serveur
-
-    # 5. Si pas notre tour, attendre le coup de l'autre
-
-    fini = True
-    while not fini:
-
-        # Lancer la recherche de meilleur coup
-
-        # Envoyer notre coup au serveur
-
-        # Attendre l'information du serveur avec le tour de l'adversaire
-
-        pass
-
-    print("Fini !")
-    return
-
+        elif command == 'MAP':
+            map = receive_map_command(s)
+            print(map)
+            game.update(map[-1])
 
 if __name__ == "__main__":
-    main(sys.argv)
+    ap = argparse.ArgumentParser()
+    ap.add_argument("-i", "--ipAddress", required=True, type=str, help="The game server ip")
+    ap.add_argument("-p", "--port", required=True, type=str, help="The game server port")
+    ap.add_argument("-r", "--role", required=True, type=str, help="Our player role")
+
+    args = vars(ap.parse_args())
+
+    if args['role'] == 'W':
+        generic_player(args['ipAddress'], args['port'])
+    if args['role'] == 'V':
+        vampire_player.vampire_game(args['ipAddress'], args['port'])
+    else:
+        raise ValueError('Unkown player!')

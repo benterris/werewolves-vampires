@@ -2,7 +2,7 @@
 
 import socket
 import struct
-from python import state
+import state
 from time import sleep
 
 
