@@ -1,0 +1,16 @@
+03/11/2019 15:15:48	Démarrage de l'attente de 1 connexion(s).
+03/11/2019 15:17:07	Réception de NME en cours pour le joueur 0
+03/11/2019 15:17:07	Nom du joueur #0 est Equipe4
+03/11/2019 15:17:07	Envoi de la description de la carte au joueur 0
+03/11/2019 15:17:07	Envoi de la description de la carte au joueur 0 terminé
+03/11/2019 15:17:07	Connexion(s) effectuée(s).
+03/11/2019 15:17:07	Arrêt de l'écoute.
+03/11/2019 15:17:12	Démarrage du tour à tour
+03/11/2019 15:17:12	Démarrage du chrono
+03/11/2019 15:17:12	Coup n°1
+			-> Tour du joueur #0
+03/11/2019 15:17:12	Envoi de UPD pour 0 mise(s) à jour
+03/11/2019 15:17:12	Fin de la partie car les Vampires ont triché.
+Une connexion existante a dû être fermée par l’hôte distant: 			Message:{1}
+03/11/2019 15:17:16	Envoi de END et BYE et fermeture de la socket aux Vampires
+03/11/2019 15:17:16	Echec Envoi de END et BYE et fermeture de la socket aux Vampires

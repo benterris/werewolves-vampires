@@ -1,0 +1,49 @@
+03/11/2019 15:33:01	Démarrage de l'attente de 1 connexion(s).
+03/11/2019 15:34:00	Réception de NME en cours pour le joueur 0
+03/11/2019 15:34:00	Nom du joueur #0 est Equipe4
+03/11/2019 15:34:00	Envoi de la description de la carte au joueur 0
+03/11/2019 15:34:00	Envoi de la description de la carte au joueur 0 terminé
+03/11/2019 15:34:00	Connexion(s) effectuée(s).
+03/11/2019 15:34:00	Arrêt de l'écoute.
+03/11/2019 15:34:05	Démarrage du tour à tour
+03/11/2019 15:34:05	Démarrage du chrono
+03/11/2019 15:34:05	Coup n°1
+			-> Tour du joueur #0
+03/11/2019 15:34:05	Envoi de UPD pour 0 mise(s) à jour
+		Trame de UPD: 55-50-44-00
+03/11/2019 15:34:05	Attente de la réponse du joueur
+			-> Attente des 4 premiers octets
+		-> Les 4 premiers octets ont bien été reçus
+			MOV: en attente de 5 octets
+			MOV: tous les octets ont été reçus
+			MOV: les mouvements sont en cours de calculs
+03/11/2019 15:34:07	Coup n°2
+			-> Tour du joueur #0
+03/11/2019 15:34:07	Envoi de UPD pour 2 mise(s) à jour
+		Trame de UPD: 55-50-44-02-03-03-00-04-00-04-03-00-00-00
+03/11/2019 15:34:07	Attente de la réponse du joueur
+			-> Attente des 4 premiers octets
+		-> Les 4 premiers octets ont bien été reçus
+			MOV: en attente de 5 octets
+			MOV: tous les octets ont été reçus
+			MOV: les mouvements sont en cours de calculs
+03/11/2019 15:34:10	Coup n°3
+			-> Tour du joueur #0
+03/11/2019 15:34:10	Envoi de UPD pour 2 mise(s) à jour
+		Trame de UPD: 55-50-44-02-02-02-00-08-00-03-03-00-00-00
+03/11/2019 15:34:10	Attente de la réponse du joueur
+			-> Attente des 4 premiers octets
+		-> Les 4 premiers octets ont bien été reçus
+			MOV: en attente de 5 octets
+			MOV: tous les octets ont été reçus
+			MOV: les mouvements sont en cours de calculs
+03/11/2019 15:34:14	Coup n°4
+			-> Tour du joueur #0
+03/11/2019 15:34:14	Envoi de UPD pour 2 mise(s) à jour
+		Trame de UPD: 55-50-44-02-03-01-00-08-00-02-02-00-00-00
+03/11/2019 15:34:14	Attente de la réponse du joueur
+			-> Attente des 4 premiers octets
+		-> Les 4 premiers octets ont bien été reçus
+			MOV: en attente de 5 octets
+			MOV: tous les octets ont été reçus
+			MOV: les mouvements sont en cours de calculs

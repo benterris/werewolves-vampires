@@ -1,0 +1,7 @@
+03/11/2019 15:21:54	Démarrage de l'attente de 1 connexion(s).
+03/11/2019 15:21:58	Réception de NME en cours pour le joueur 0
+03/11/2019 15:21:58	Nom du joueur #0 est Equipe4
+03/11/2019 15:21:58	Envoi de la description de la carte au joueur 0
+03/11/2019 15:21:58	Envoi de la description de la carte au joueur 0 terminé
+03/11/2019 15:21:58	Connexion(s) effectuée(s).
+03/11/2019 15:21:58	Arrêt de l'écoute.
