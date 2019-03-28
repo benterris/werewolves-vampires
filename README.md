@@ -2,9 +2,9 @@
 
 ## Installation guide
 All you have to do is run this command to install the needed librairies:
-'''
+```
 pip install -r requirements.txt
-'''
+```
 
 ## File Content:
 
