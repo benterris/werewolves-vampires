@@ -21,7 +21,7 @@ All our code is in Python folder:
 * main.py: launches the game (connecting to server and playing)
 * constraint_programming.py: a method that we tried but did NOT use finally.
 * possible_plays.py: given a certain map and certain situation, it gives the possible plays to do in the next round.
-* possible_plays_improved: the names explains it all.
+* possible_plays_improved.py: the names explains it all.
 
 
 
